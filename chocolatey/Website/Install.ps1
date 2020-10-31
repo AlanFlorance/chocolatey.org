@@ -43,7 +43,7 @@ if (![string]::IsNullOrEmpty($chocolateyDownloadUrl)){
   $url = "$chocolateyDownloadUrl"
 }
 
-if ($env:TEMP -eq $null) {
+if ($null -eq $env:TEMP) {
   $env:TEMP = Join-Path $env:SystemDrive 'temp'
 }
 $chocTempDir = Join-Path $env:TEMP "chocolatey"
@@ -108,7 +108,7 @@ param (
   }
 
   $ignoreProxy = $env:chocolateyIgnoreProxy
-  if ($ignoreProxy -ne $null -and $ignoreProxy -eq 'true') {
+  if ($null -ne $ignoreProxy -and $ignoreProxy -eq 'true') {
     Write-Debug "Explicitly bypassing proxy due to user environment variable"
     $downloader.Proxy = [System.Net.GlobalProxySelection]::GetEmptyWebProxy()
   } else {
@@ -116,10 +116,10 @@ param (
     $explicitProxy = $env:chocolateyProxyLocation
     $explicitProxyUser = $env:chocolateyProxyUser
     $explicitProxyPassword = $env:chocolateyProxyPassword
-    if ($explicitProxy -ne $null -and $explicitProxy -ne '') {
+    if ($null -ne $explicitProxy -and $explicitProxy -ne '') {
       # explicit proxy
       $proxy = New-Object System.Net.WebProxy($explicitProxy, $true)
-      if ($explicitProxyPassword -ne $null -and $explicitProxyPassword -ne '') {
+      if ($null -ne $explicitProxyPassword -and $explicitProxyPassword -ne '') {
         $passwd = ConvertTo-SecureString $explicitProxyPassword -AsPlainText -Force
         $proxy.Credentials = New-Object System.Management.Automation.PSCredential ($explicitProxyUser, $passwd)
       }
@@ -183,7 +183,7 @@ Download-File $url $file
 $7zaExe = Join-Path $tempDir '7za.exe'
 $unzipMethod = '7zip'
 $useWindowsCompression = $env:chocolateyUseWindowsCompression
-if ($useWindowsCompression -ne $null -and $useWindowsCompression -eq 'true') {
+if ($null -ne $useWindowsCompression -and $useWindowsCompression -eq 'true') {
   Write-Output 'Using built-in compression to unzip'
   $unzipMethod = 'builtin'
 } elseif (-Not (Test-Path ($7zaExe))) {
