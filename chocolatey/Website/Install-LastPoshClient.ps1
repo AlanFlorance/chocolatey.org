@@ -26,7 +26,7 @@
 
 $url = "https://packages.chocolatey.org/chocolatey.0.9.8.33.nupkg"
 
-if ($env:TEMP -eq $null) {
+if ($null -eq $env:TEMP) {
   $env:TEMP = Join-Path $env:SystemDrive 'temp'
 }
 $chocTempDir = Join-Path $env:TEMP "chocolatey"
@@ -91,10 +91,10 @@ param (
   $explicitProxy = $env:chocolateyProxyLocation
   $explicitProxyUser = $env:chocolateyProxyUser
   $explicitProxyPassword = $env:chocolateyProxyPassword
-  if ($explicitProxy -ne $null) {
+  if ($null -eq $explicitProxy) {
     # explicit proxy
   $proxy = New-Object System.Net.WebProxy($explicitProxy, $true)
-  if ($explicitProxyPassword -ne $null) {
+  if ($null -ne $explicitProxyPassword) {
     $passwd = ConvertTo-SecureString $explicitProxyPassword -AsPlainText -Force
     $proxy.Credentials = New-Object System.Management.Automation.PSCredential ($explicitProxyUser, $passwd)
   }
